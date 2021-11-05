@@ -53,7 +53,7 @@ namespace MusicService.Controllers
             return Ok(ServiceResponse.Successful(musicList));
         }
 
-        [HttpGet("{trackName}")]
+        [HttpGet("{trackName}/{artist}/{album}/{playlist}")]
         [ProducesResponseType(typeof(IEnumerable<Music>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
@@ -70,7 +70,7 @@ namespace MusicService.Controllers
             return Ok(ServiceResponse.Successful(result));
         }
 
-        [HttpPost("{trackName}{artist}{album}{playlist}")]
+        [HttpPost("{trackName}/{artist}/{album}/{playlist}")]
         [ProducesResponseType(typeof(Music), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateCostDivisionAsync(string trackName, string artist, string album, string playlist)
@@ -92,7 +92,7 @@ namespace MusicService.Controllers
             }
         }
 
-        [HttpDelete("{trackName}{artist}{album}{playlist}")]
+        [HttpDelete("{trackName}/{artist}/{album}/{playlist}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteTrack(string trackName, string artist, string album, string playlist)

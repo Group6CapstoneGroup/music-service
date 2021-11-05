@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MusicService.Services
 {
-    public class MusicService : IMusicService
+    public class SongService : IMusicService
     {
         private readonly IMusicRepository _repository;
 
-        public MusicService(IMusicRepository repository)
+        public SongService(IMusicRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
