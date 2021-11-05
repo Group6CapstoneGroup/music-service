@@ -4,15 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MusicService.Services
+namespace MusicService.Repositories
 {
-    public interface IMusicService
+    public interface IMusicRepository
     {
         IAsyncEnumerable<Music> GetAsync();
-        Task<Music> GetAsync(string trackName);
-
+        Task<Music> GetAsync(string trackName, string artist, string album, string playlist);
         Task<Music> CreateAsync(string trackName, string artist, string album, string playlist);
-
-        Task<bool> DeleteAsync(string trackName, string artist, string album, string playlist);
+        Task<bool> Delete(string trackName, string artist, string album, string playlist);
     }
 }

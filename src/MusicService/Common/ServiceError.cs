@@ -7,5 +7,8 @@ namespace MusicService.Common
 {
     public class ServiceError
     {
+        public int Status { get; set; }
+
+        public string Title { get; set; }
     }
 }
