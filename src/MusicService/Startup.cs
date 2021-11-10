@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,7 +29,7 @@ namespace MusicService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -36,6 +37,8 @@ namespace MusicService
             });
 
             ConfigureMusicService(services);
+            ConfigureDbContext(services);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,10 +77,25 @@ namespace MusicService
 
         }
 
+        private void ConfigureDbContext(IServiceCollection services)
+        {
+            services.AddDbContext<Repositories.Common.MusicDbContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("MusicDb"), npgsqlOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 10,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorCodesToAdd: null);
+                });
+            });
+        }
+
         private void ConfigureMusicService(IServiceCollection services)
         {
             services.AddScoped<IMusicRepository, MusicRepository>();
             services.AddTransient<IMusicService, SongService>();
+            services.AddAutoMapper(typeof(ModelMapping.MusicProfile));
         }
     }
 }
