@@ -1,3 +1,9 @@
-dotnet user-secrets init
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-dotnet user-secrets set ConnectionStrings:JobCostDb "Server=localhost;Database=musicdb;Port=8080;User Id=docker;Password=docker;"
+CREATE TABLE music (
+	record_id uuid default uuid_generate_v4() PRIMARY KEY,
+	artist varchar(100) not null,
+	track varchar(100) not null,
+	playlist varchar(100) not null,
+	album varchar(100) not null
+);
