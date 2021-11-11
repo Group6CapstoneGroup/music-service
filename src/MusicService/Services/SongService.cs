@@ -1,4 +1,5 @@
-﻿using MusicService.Models;
+﻿using MusicService.ControllerModels;
+using MusicService.Models;
 using MusicService.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,27 +17,44 @@ namespace MusicService.Services
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public Task<Music> CreateAsync(string trackName, string artist, string album, string playlist)
+        public async Task<Models.Music> CreateAsync(MusicCreate create)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("Entering CreateAsync");
+
+            var entity = await _repository.CreateAsync(create);
+            if (entity == null)
+            {
+                return null;
+            }
+            System.Diagnostics.Debug.WriteLine($"Exiting CreateAsync - ID {entity.RecordId}");
+            return entity;
         }
 
-        public Task<bool> DeleteAsync(string trackName, string artist, string album, string playlist)
+        public async Task<bool> DeleteAsync(long recordNumber)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine($"Entering DeleteAsync");
+            var track = GetAsync(recordNumber).Result;
+            var removed = await _repository.Delete(track);
+
+            System.Diagnostics.Debug.WriteLine($"Exiting DeleteAsync");
+            return removed;
         }
 
-        public IAsyncEnumerable<Music> GetAsync()
+        public IAsyncEnumerable<Models.Music> GetAsync()
         {
             System.Diagnostics.Debug.WriteLine("Entering GetAsync");
             var result = _repository.GetAsync();
             System.Diagnostics.Debug.WriteLine("Exiting GetAsync");
-            return result;
+            return (IAsyncEnumerable<Models.Music>)result;
         }
 
-        public Task<Music> GetAsync(string trackName)
+        public async Task<Models.Music> GetAsync(long recordNumber)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine($"Entering GetAsync - record number {recordNumber}");
+            var entity = await _repository.GetAsync(recordNumber);
+            System.Diagnostics.Debug.WriteLine($"Exiting GetAsync - record number {recordNumber}");
+            // entity is null if not found
+            return entity;
         }
     }
 }

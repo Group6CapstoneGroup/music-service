@@ -34,6 +34,7 @@ namespace MusicService.Repositories.Common
                     .HasDefaultValueSql("uuid_generate_v4()");
 
                 entity.Property(e => e.Artist).HasColumnName("artist");
+                entity.Property(e => e.RecordNumber).HasColumnName("record_number");
 
                 entity.Property(e => e.Track).HasColumnName("track");
 
