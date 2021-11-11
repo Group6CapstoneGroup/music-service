@@ -1,4 +1,5 @@
-﻿using MusicService.Models;
+﻿using MusicService.ControllerModels;
+using MusicService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,11 @@ namespace MusicService.Services
 {
     public interface IMusicService
     {
-        IAsyncEnumerable<Music> GetAsync();
-        Task<Music> GetAsync(string trackName);
+        IAsyncEnumerable<Models.Music> GetAsync();
+        Task<Models.Music> GetAsync(long recordNumber);
 
-        Task<Music> CreateAsync(string trackName, string artist, string album, string playlist);
+        Task<Models.Music> CreateAsync(MusicCreate entry);
 
-        Task<bool> DeleteAsync(string trackName, string artist, string album, string playlist);
+        Task<bool> DeleteAsync(long recordNumber);
     }
 }

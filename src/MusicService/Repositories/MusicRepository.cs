@@ -1,4 +1,6 @@
-﻿using MusicService.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicService.ControllerModels;
+using MusicService.Models;
 using MusicService.Repositories.Common;
 using System;
 using System.Collections.Generic;
@@ -17,17 +19,71 @@ namespace MusicService.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Task<Music> CreateAsync(string trackName, string artist, string album, string playlist)
+        public async Task<Models.Music> CreateAsync(MusicCreate create)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine($"Entering CreateAsync - Music {create.Track}, {create.Artist}");
+            var recordNumber = (_context.Music.Max(costDivision => costDivision.RecordNumber as long?) ?? 0) + 1;
+
+            var entity = new Models.Music
+            {
+                RecordNumber = recordNumber,
+                Artist = create.Artist,
+                Album = create.Album,
+                Playlist = create.Playlist,
+                Track = create.Track
+            };
+            try
+            {
+                entity.RecordId = Guid.NewGuid();
+                await _context.Music.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                System.Diagnostics.Debug.WriteLine($"Exiting CreateAsync - RecordNumber {recordNumber}, music {entity.Track}, {entity.Artist}");
+                // We should encounter a DbUpdateConcurrencyException if an unexpected number of rows were affected
+
+                return entity;
+            }
+            catch (DbUpdateConcurrencyException dbuce)
+            {
+                System.Diagnostics.Debug.WriteLine(dbuce, $"Failed to create entity - RecordNumber {recordNumber}, music {entity.Track}, {entity.Artist} - concurrent access");
+                return null;
+            }
+            catch (DbUpdateException dbue)
+            {
+                System.Diagnostics.Debug.WriteLine(dbue, $"Failed to create entity - RecordNumber {recordNumber}, music {entity.Track}, {entity.Artist}");
+                // We want to re-throw this error, as it is indicative of something wrong with the database
+                // which would be an internal server issue
+                throw;
+            }
         }
 
-        public Task<bool> Delete(string trackName, string artist, string album, string playlist)
+        public async Task<bool> Delete(Models.Music track)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine($"Entering Delete");
+            try
+            {
+
+                 _context.Music.Remove(track);
+                var numStateEntriesWritten = await _context.SaveChangesAsync();
+                System.Diagnostics.Debug.WriteLine($"Exiting Delete");
+                // We should encounter a DbUpdateConcurrencyException if an unexpected number of rows were affected
+                return true;
+            }
+            catch (DbUpdateConcurrencyException dbuce)
+            {
+                // This means not all of the records existed to be deleted
+                System.Diagnostics.Debug.WriteLine(dbuce, $"Failed to delete entity - concurrent access");
+                return false;
+            }
+            catch (DbUpdateException dbue)
+            {
+                System.Diagnostics.Debug.WriteLine(dbue, $"Failed to delete entity");
+                // We want to re-throw this error, as it is indicative of something wrong with the database
+                // which would be an internal server issue
+                throw;
+            }
         }
 
-        public IAsyncEnumerable<Music> GetAsync()
+        public IAsyncEnumerable<Models.Music> GetAsync()
         {
             System.Diagnostics.Debug.WriteLine($"Entering GetAsync");
             try
@@ -52,9 +108,12 @@ namespace MusicService.Repositories
             }
         }
 
-        public Task<Music> GetAsync(string trackName, string artist, string album, string playlist)
+        public async Task<Models.Music> GetAsync(long recordNumber)
         {
-            throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine($"Entering GetAsync - record number {recordNumber}");
+            var result = await _context.Music.FirstOrDefaultAsync(I => I.RecordNumber == recordNumber);
+            System.Diagnostics.Debug.WriteLine($"Exiting GetAsync - record number {recordNumber}");
+            return result;
         }
     }
 }
