@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b75f02ab-ca5d-428a-8173-cd6c182dd3a2",
+		"_postman_id": "1d7bc7aa-f375-4772-8eab-baea939f0202",
 		"name": "MusicServiceTestCollection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,6 +14,24 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//this is the array of music\r",
+							"const response = pm.response.json();\r",
+							"//this is the first element of the array\r",
+							"const object = response.result[0];\r",
+							"\r",
+							"pm.test(\"check array size length is 30 which is inital data entered in db\", () =>{\r",
+							"    pm.expect(response.result).to.have.lengthOf(30)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Make sure body items in array have correct properties\", () =>  {\r",
+							"    pm.expect(object).to.have.property('album')\r",
+							"    pm.expect(object).to.have.property('track')\r",
+							"    pm.expect(object).to.have.property('artist')\r",
+							"    pm.expect(object).to.have.property('playlist')\r",
+							"    pm.expect(object).to.have.property('recordId')\r",
+							"    pm.expect(object).to.have.property('recordNumber')\r",
 							"});\r",
 							"\r",
 							""
@@ -47,11 +65,20 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
 							"pm.test(\"Status code is 201\", function () {\r",
 							"  pm.response.to.have.status(201);\r",
 							"});\r",
 							"\r",
-							""
+							"pm.test(\"response body has all properties and is formatted correctly\",() => {\r",
+							"    pm.expect(response.result).to.have.property('album')\r",
+							"    pm.expect(response.result).to.have.property('track')\r",
+							"    pm.expect(response.result).to.have.property('artist')\r",
+							"    pm.expect(response.result).to.have.property('playlist')\r",
+							"    pm.expect(response.result).to.have.property('recordId')\r",
+							"    pm.expect(response.result).to.have.property('recordNumber')\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -91,10 +118,21 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
 							"pm.test(\"Status code is 200\", function () {\r",
 							"  pm.response.to.have.status(200);\r",
 							"});\r",
 							"\r",
+							"\r",
+							"pm.test(\"response body has all properties and is formatted correctly\",() => {\r",
+							"    pm.expect(response.result).to.have.property('album')\r",
+							"    pm.expect(response.result).to.have.property('track')\r",
+							"    pm.expect(response.result).to.have.property('artist')\r",
+							"    pm.expect(response.result).to.have.property('playlist')\r",
+							"    pm.expect(response.result).to.have.property('recordId')\r",
+							"    pm.expect(response.result).to.have.property('recordNumber')\r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -139,7 +177,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Music/{{trackRecordNumber}}",
+					"raw": "https://localhost:5001/api/Music/{{deleteRecordNumber}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -148,7 +186,7 @@
 					"path": [
 						"api",
 						"Music",
-						"{{trackRecordNumber}}"
+						"{{deleteRecordNumber}}"
 					]
 				}
 			},
