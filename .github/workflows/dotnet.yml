@@ -1,0 +1,35 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      working-directory: ./src
+      run: dotnet build --configuration $config --no-restore
+    - name: Start dependencies for integration tests (docker-compose)
+      run: |
+        docker-compose -f docker-compose.yml up --detach
+        
+    # - name: Unit Test
+    #   working-directory: ./src
+    #   run: dotnet test --configuration $config --no-restore --no-build --verbosity normal
+
+    - name: Integration Test
+      run: newman run test/MusicServiceTestCollection.postman_collection.json -e test/Music_Service_Enviornment.postman_environment.json
+
