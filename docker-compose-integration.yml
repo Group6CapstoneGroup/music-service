@@ -1,0 +1,45 @@
+# Note that this docker compose is intended to only be used for testing purposes at this time
+version: '3.3'
+
+services:
+
+  postgres:
+    image: postgres:11
+    restart: always
+    environment:
+      # These are "magic" environment variables used by the container to create a user
+      # Details: https://hub.docker.com/_/postgres
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+    ports:
+      - "8080:5432"
+    volumes:
+      # By mapping the .sql file to the entrypoint for initializing the database, we ensure it gets run 
+      # after the database finishes starting up
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  flyway:
+    image: flyway/flyway:7.5.3
+    # These values are based on the postgres container and the init.sql file contents
+    # We use connect retries so that we can wait until the database server is ready
+    command: > 
+      migrate 
+        -url=jdbc:postgresql://postgres/musicdb
+        -user=docker 
+        -password=docker 
+        -locations=filesystem:/flyway/sql 
+        -connectRetries=60 
+    volumes:
+      - ./sql:/flyway/sql
+    depends_on:
+      - postgres
+
+  music-service:
+    build: ./src/MusicService
+    ports:
+    - 5000:80
+    environment:
+    - ConnectionStrings__MusicDb=Username=docker;Password=docker;Host=postgres;Database=musicdb;
+    depends_on:
+      - postgres
+      - flyway
