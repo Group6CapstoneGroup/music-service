@@ -44,12 +44,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/Music",
+					"raw": "https://localhost:8080/api/Music",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "5001",
+					"port": "8080",
 					"path": [
 						"api",
 						"Music"
