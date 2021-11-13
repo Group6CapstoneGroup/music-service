@@ -39,7 +39,7 @@ jobs:
       run: dotnet build --configuration $config --no-restore
     - name: Start dependencies for integration tests (docker-compose)
       run: |
-        docker-compose -f docker-compose.yml up --detach
+        docker-compose -f docker-compose-integration.yml up --detach
         
     # - name: Unit Test
     #   working-directory: ./src
