@@ -1,23 +1,38 @@
-name: .NET
-
+name: dotnet package
 on:
   push:
-    branches: [ main ]
+    paths-ignore:
+    - 'README.md'
+    branches: 
+    - main
   pull_request:
-    branches: [ main ]
+    paths-ignore:
+    - 'README.md'
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    # use release mode for all steps
+    env:
+      config: 'Release'
+    strategy:
+      matrix:
+        # latest dotnet 5.0 version at time of workflow
+        dotnet-version: [ '5.0.x' ]
+      fail-fast: false
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core SDK ${{ matrix.dotnet }}
+      uses: actions/setup-dotnet@v1.7.2
       with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
+        dotnet-version: ${{ matrix.dotnet-version }}
+
+    - name: Install dependencies (Like NuGet packages)
+      working-directory: ./src
       run: dotnet restore
     - name: Build
       working-directory: ./src
