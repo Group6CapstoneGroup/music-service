@@ -34,7 +34,7 @@ services:
     depends_on:
       - postgres
 
-  jobcost-service:
+  music-service:
     build: ./src/MusicService
     ports:
     - 5000:80
