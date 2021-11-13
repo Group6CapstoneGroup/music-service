@@ -36,7 +36,7 @@ jobs:
       run: dotnet restore
     - name: Build
       working-directory: ./src
-      run: dotnet build --configuration $config --no-restore
+      run: dotnet run build --configuration $config --no-restore
     - name: Start dependencies for integration tests (docker-compose)
       run: |
         docker-compose -f docker-compose-integration.yml up --detach
