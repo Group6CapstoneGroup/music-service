@@ -36,6 +36,16 @@ namespace MusicService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MusicService", Version = "v1" });
             });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
             ConfigureMusicService(services);
             ConfigureDbContext(services);
 
@@ -51,7 +61,7 @@ namespace MusicService
                 .AddSupportedUICultures(supportedCultures);
 
             app.UseRequestLocalization(localizationOptions);
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -67,7 +77,7 @@ namespace MusicService
 
 
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

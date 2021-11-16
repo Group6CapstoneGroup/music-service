@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
 using MusicService.Common.Exceptions;
 using MusicService.ControllerModels;
+using Microsoft.AspNetCore.Cors;
 
 namespace MusicService.Controllers
 {
@@ -34,7 +35,7 @@ namespace MusicService.Controllers
         [ProducesResponseType(typeof(IEnumerable<Models.Music>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(Error), StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetMusic()
+        public async Task<List<Models.Music>> GetMusic()
         {
             System.Diagnostics.Debug.WriteLine("Entering get all music tracks");
 
@@ -42,7 +43,7 @@ namespace MusicService.Controllers
 
             if (result is null)
             {
-                return NoContent();
+                return null;
             }
 
             var musicList = new List<Models.Music>();
@@ -51,7 +52,7 @@ namespace MusicService.Controllers
                musicList.Add(_mapper.Map<Models.Music>(music));
             }
 
-            return Ok(ServiceResponse.Successful(musicList));
+            return musicList;
         }
 
         [HttpGet("{recordNumber}")]
