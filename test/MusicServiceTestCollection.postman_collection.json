@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d7bc7aa-f375-4772-8eab-baea939f0202",
+		"_postman_id": "589fc0f7-ef38-448a-a621-f02c5ac709c9",
 		"name": "MusicServiceTestCollection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -19,10 +19,10 @@
 							"//this is the array of music\r",
 							"const response = pm.response.json();\r",
 							"//this is the first element of the array\r",
-							"const object = response.result[0];\r",
+							"const object = response[0];\r",
 							"\r",
 							"pm.test(\"check array size length is 30 which is inital data entered in db\", () =>{\r",
-							"    pm.expect(response.result).to.have.lengthOf(30)\r",
+							"    pm.expect(response).to.have.lengthOf(30)\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Make sure body items in array have correct properties\", () =>  {\r",
