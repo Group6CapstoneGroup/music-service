@@ -19,6 +19,7 @@ namespace MusicService.Repositories.Common
         }
 
         public virtual DbSet<Music> Music { get; set; }
+        public virtual DbSet<SelectedSong> SelectedSong { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,7 +43,28 @@ namespace MusicService.Repositories.Common
                 entity.Property(e => e.Album).HasColumnName("album");
 
             });
-            
+
+            modelBuilder.Entity<SelectedSong>(entity =>
+            {
+                entity.HasKey(e => e.RecordId)
+                    .HasName("Id");
+
+                entity.ToTable("selected_songs");
+
+                entity.Property(e => e.RecordId)
+                    .HasColumnName("record_id")
+                    .HasDefaultValueSql("uuid_generate_v4()");
+
+                entity.Property(e => e.Artist).HasColumnName("artist");
+                entity.Property(e => e.RecordNumber).HasColumnName("record_number");
+
+                entity.Property(e => e.Track).HasColumnName("track");
+
+                entity.Property(e => e.Playlist).HasColumnName("playlist");
+                entity.Property(e => e.Album).HasColumnName("album");
+
+            });
+
             OnModelCreatingPartial(modelBuilder);
 
         }

@@ -47,6 +47,7 @@ namespace MusicService
             });
 
             ConfigureMusicService(services);
+            ConfigureSelectedSongService(services);
             ConfigureDbContext(services);
 
         }
@@ -73,7 +74,7 @@ namespace MusicService
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "JobCostService v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MusicService v1"));
 
 
             app.UseRouting();
@@ -106,6 +107,13 @@ namespace MusicService
             services.AddScoped<IMusicRepository, MusicRepository>();
             services.AddTransient<IMusicService, SongService>();
             services.AddAutoMapper(typeof(ModelMapping.MusicProfile));
+        }
+
+        private void ConfigureSelectedSongService(IServiceCollection services)
+        {
+            services.AddScoped<ISelectedSongRepository, SelectedSongRepository>();
+            services.AddTransient<ISelectedSongService, SelectedSongService>();
+            services.AddAutoMapper(typeof(ModelMapping.SelectedSongProfile));
         }
     }
 }
