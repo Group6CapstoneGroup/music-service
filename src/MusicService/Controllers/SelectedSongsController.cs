@@ -74,5 +74,24 @@ namespace MusicService.Controllers
                 return BadRequest(ServiceResponse.Error(se.Message, StatusCodes.Status400BadRequest));
             }
         }
+
+        [HttpDelete("List")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteSongSelection()
+        {
+            System.Diagnostics.Debug.WriteLine($"Entering Delete");
+
+            var removed = await _service.DeleteAsync();
+            System.Diagnostics.Debug.WriteLine($"Exiting Delete");
+            if (removed)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound(ServiceResponse.Error(_localizer["SelectedSongList404ErrorResponse"], StatusCodes.Status404NotFound)); // TODO
+            }
+        }
     }
 }

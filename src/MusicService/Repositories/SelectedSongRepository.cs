@@ -54,6 +54,36 @@ namespace MusicService.Repositories
                 throw;
             }        }
 
+        public async Task<bool> DeleteAsync(IAsyncEnumerable<Models.SelectedSong> songKeys)
+        {
+            System.Diagnostics.Debug.WriteLine($"Entering DeleteAsync multiple");
+            try
+            {
+                await foreach (var song in songKeys)
+                {
+                    _context.SelectedSong.Remove(song);
+                }
+                var numStateEntriesWritten = await _context.SaveChangesAsync();
+                System.Diagnostics.Debug.WriteLine($"Deleted {numStateEntriesWritten} entities");
+                System.Diagnostics.Debug.WriteLine($"Exiting DeleteAsync multiple");
+                // We should encounter a DbUpdateConcurrencyException if an unexpected number of rows were affected
+                return true;
+            }
+            catch (DbUpdateConcurrencyException dbuce)
+            {
+                // This means not all of the records existed to be deleted
+                System.Diagnostics.Debug.WriteLine(dbuce, $"Failed to delete entities - concurrent access");
+                return false;
+            }
+            catch (DbUpdateException dbue)
+            {
+                System.Diagnostics.Debug.WriteLine(dbue, $"Failed to delete entities");
+                // We want to re-throw this error, as it is indicative of something wrong with the database
+                // which would be an internal server issue
+                throw;
+            }
+        }
+
         public IAsyncEnumerable<Models.SelectedSong> GetAsync()
         {
             System.Diagnostics.Debug.WriteLine($"Entering GetAsync");

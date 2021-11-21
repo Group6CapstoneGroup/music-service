@@ -11,5 +11,8 @@ namespace MusicService.Services
         IAsyncEnumerable<Models.SelectedSong> GetSelectedSongs();
 
         Task<Models.SelectedSong> CreateSongRecord(ControllerModels.SelectedSongCreate entry);
+
+        Task<bool> DeleteAsync();
+
     }
 }

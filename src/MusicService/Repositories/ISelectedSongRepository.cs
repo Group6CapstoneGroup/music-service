@@ -1,4 +1,5 @@
 ﻿using MusicService.ControllerModels;
+using MusicService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace MusicService.Repositories
     {
         IAsyncEnumerable<Models.SelectedSong> GetAsync();
         Task<Models.SelectedSong> CreateAsync(SelectedSongCreate entry);
+        Task<bool> DeleteAsync(IAsyncEnumerable<SelectedSong> keys);
     }
 }

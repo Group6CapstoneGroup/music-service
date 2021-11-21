@@ -35,5 +35,15 @@ namespace MusicService.Services
             System.Diagnostics.Debug.WriteLine("Exiting GetAsync");
             return (IAsyncEnumerable<Models.SelectedSong>)result;
         }
+
+        public async Task<bool> DeleteAsync()
+        {
+            System.Diagnostics.Debug.WriteLine($"Entering DeleteAsync");
+            var selectedSongList = GetSelectedSongs();
+            var removed = await _repository.DeleteAsync(selectedSongList);
+
+            System.Diagnostics.Debug.WriteLine($"Exiting DeleteAsync");
+            return removed;
+        }
     }
 }
