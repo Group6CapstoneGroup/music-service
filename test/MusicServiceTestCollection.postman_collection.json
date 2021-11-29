@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "589fc0f7-ef38-448a-a621-f02c5ac709c9",
+		"_postman_id": "e31995c7-c9b2-4895-a2af-63de7f15dc45",
 		"name": "MusicServiceTestCollection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -21,8 +21,8 @@
 							"//this is the first element of the array\r",
 							"const object = response[0];\r",
 							"\r",
-							"pm.test(\"check array size length is 30 which is inital data entered in db\", () =>{\r",
-							"    pm.expect(response).to.have.lengthOf(30)\r",
+							"pm.test(\"check array size length is 15 which is inital data entered in db\", () =>{\r",
+							"    pm.expect(response).to.have.lengthOf(15)\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Make sure body items in array have correct properties\", () =>  {\r",
@@ -179,6 +179,122 @@
 						"api",
 						"Music",
 						"{{deleteRecordNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all selected songs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/SelectedSongs",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"SelectedSongs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new selected song",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"response body has all properties and is formatted correctly\",() => {\r",
+							"    pm.expect(response.result).to.have.property('album')\r",
+							"    pm.expect(response.result).to.have.property('track')\r",
+							"    pm.expect(response.result).to.have.property('artist')\r",
+							"    pm.expect(response.result).to.have.property('playlist')\r",
+							"    pm.expect(response.result).to.have.property('recordId')\r",
+							"    pm.expect(response.result).to.have.property('recordNumber')\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"track\": \"testselectedtrack\",\r\n  \"artist\": \"testselectedartist\",\r\n  \"album\": \"testselectedalbum\",\r\n  \"playlist\": \"testselectedplaylist\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/SelectedSongs",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"SelectedSongs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete all selected songs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"  pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/SelectedSongs/List",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"SelectedSongs",
+						"List"
 					]
 				}
 			},
