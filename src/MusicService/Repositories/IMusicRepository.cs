@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MusicService.Repositories
 {
+    //music-service requirment 1.5.1 Music Repository will inherit from the interface IMusicRepository. IMusicRepository contains 4 functions: GetAsync(), GetAsync(recordNumber), CreateAsync(entry), Delete(entry).
     public interface IMusicRepository
     {
         IAsyncEnumerable<Models.Music> GetAsync();

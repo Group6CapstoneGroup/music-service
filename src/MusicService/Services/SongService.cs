@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 //music-service requirment 1.3.0 Music service will contain a service called song service.
 namespace MusicService.Services
 {
-    //music service requirment 1.3.1 Song service will inherit from an interface called IMusicService. This gives song service template it needs to satisfy for all it’s actions. IMusicService contains four functions: GetAsync(),GetAsync(recordNumber), CreateAsync(entry), DeleteAsync(recordNumber).
+    //music service requirment 1.3.1 Song service will inherit from an interface called IMusicService. This gives song service template it needs to satisfy for all its actions. IMusicService contains four functions: GetAsync(),GetAsync(recordNumber), CreateAsync(entry), DeleteAsync(recordNumber).
     public class SongService : IMusicService
     {
         private readonly IMusicRepository _repository;
