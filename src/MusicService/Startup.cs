@@ -78,7 +78,8 @@ namespace MusicService
 
 
             app.UseRouting();
-            app.UseCors();
+            //music-service requirment 1.1.0 This helps allow UI to ping music service by enabling CORS (Cross origin resource sharing).
+            app.UseCors(); 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
