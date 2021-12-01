@@ -10,6 +10,7 @@ namespace MusicService.ModelMapping
     {
         public MusicProfile()
         {
+            //mapping music controller model to music model
             CreateMap<Models.Music, ControllerModels.Music>().ReverseMap();
         }  
     }

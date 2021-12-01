@@ -10,6 +10,7 @@ namespace MusicService.ModelMapping
     {
         public SelectedSongProfile()
         {
+            //mapping selected song controller model to selected song model
             CreateMap<Models.SelectedSong, ControllerModels.SelectedSongCreate>().ReverseMap();
 
         }
