@@ -56,7 +56,7 @@ Now navigate back up to the `music-service/` directory where your docker-compose
 
 Once you're successfully running your database instance in docker you can open up the MusicService.sln under the `src/` folder to run the MusicService web application.
 
-For video instructions on setup and install please click [here].
+For video instructions on setup and install please click [here](https://www.youtube.com/watch?v=W_VX_slroMk).
 
 ## Project Layout
 
