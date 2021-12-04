@@ -52,11 +52,11 @@ dotnet user-secrets set ConnectionStrings:MusicDb "Server=localhost;Database=mus
 
 You should get an output saying the user secrets have successfully been set! To validate the secrets have been set you can open up the MusicService.sln file under the `src/` directory. Once the solution is pulled up, right click on MusicService in the solution explorer and click Manage User-Secrets in the menu. This should take you to the secrets.json file of the sln and you should see you have successfully set your ConnectionString.
 
-Now navigate back up to the `music-service/` directory where your docker-compose file lives. You can spin up an instance of the postgres database via docker-compose. Run `docker-compose up` from the root directory and wait for Flyway to complete it's migration. For more information on Flyway Migrations see [here](https://flywaydb.org/documentation/concepts/migrations).
+Now navigate back up to the `music-service/` directory where your docker-compose file lives. You can spin up an instance of the postgres database via docker-compose. Run `docker-compose up` from the root directory and wait for Flyway to complete it's migration. For more information on Flyway Migrations see [here](https://flywaydb.org/documentation/concepts/migrations). To stop and remove your docker container press CTRL + C and enter `docker-compose down`.
 
 Once you're successfully running your database instance in docker you can open up the MusicService.sln under the `src/` folder to run the MusicService web application.
 
-For video instructions on setup and install please click [here].
+For video instructions on setup and install please click [here](https://www.youtube.com/watch?v=W_VX_slroMk).
 
 ## Project Layout
 
